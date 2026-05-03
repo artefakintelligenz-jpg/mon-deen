@@ -43,56 +43,91 @@ export default function App() {
   const Page = PAGES[page] || Dashboard;
 
   return (
-    <div className="geo-bg min-h-screen flex flex-col">
-      {/* Page content */}
-      <main className="flex-1 overflow-y-auto" style={{ paddingBottom: '72px' }}>
-        <Page location={location} setLocation={setLocation} onNav={setPage} />
-      </main>
+    <div className="geo-bg min-h-screen" style={{ display: 'flex', justifyContent: 'center' }}>
+      {/* Phone frame centered on desktop */}
+      <div style={{
+        width: '100%',
+        maxWidth: '480px',
+        minHeight: '100vh',
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        boxShadow: '0 0 60px rgba(0,0,0,0.6)',
+        background: '#0d1117',
+      }}>
+        {/* Page content */}
+        <main style={{ flex: 1, overflowY: 'auto', paddingBottom: '72px' }}>
+          <Page location={location} setLocation={setLocation} onNav={setPage} />
+        </main>
 
-      {/* Bottom nav — scrollable single row */}
-      <nav
-        className="fixed bottom-0 left-0 right-0 z-50 bg-midnight/98 backdrop-blur-xl border-t border-white/5"
-        style={{ height: '64px' }}
-      >
-        <div
-          className="flex items-center h-full px-1 gap-0.5 overflow-x-auto"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
-        >
-          {NAV.map(item => {
-            const active = page === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setPage(item.id)}
-                className="flex flex-col items-center justify-center flex-shrink-0 rounded-xl transition-all px-2 py-1"
-                style={{
-                  minWidth: '52px',
-                  height: '52px',
-                  background: active ? 'rgba(201,168,76,0.12)' : 'transparent',
-                  border: active ? '1px solid rgba(201,168,76,0.25)' : '1px solid transparent',
-                }}
-              >
-                <span style={{ fontSize: '18px', lineHeight: 1 }}>{item.icon}</span>
-                <span
+        {/* Bottom nav */}
+        <nav style={{
+          position: 'fixed',
+          bottom: 0,
+          width: '100%',
+          maxWidth: '480px',
+          height: '64px',
+          background: 'rgba(22,27,38,0.98)',
+          backdropFilter: 'blur(20px)',
+          borderTop: '1px solid rgba(255,255,255,0.05)',
+          zIndex: 50,
+          display: 'flex',
+          alignItems: 'center',
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            height: '100%',
+            padding: '0 4px',
+            gap: '2px',
+            overflowX: 'auto',
+            scrollbarWidth: 'none',
+            msOverflowStyle: 'none',
+            WebkitOverflowScrolling: 'touch',
+            width: '100%',
+          }}>
+            {NAV.map(item => {
+              const active = page === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setPage(item.id)}
                   style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    minWidth: '52px',
+                    height: '52px',
+                    borderRadius: '12px',
+                    padding: '4px 6px',
+                    background: active ? 'rgba(201,168,76,0.12)' : 'transparent',
+                    border: active ? '1px solid rgba(201,168,76,0.25)' : '1px solid transparent',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  <span style={{ fontSize: '18px', lineHeight: 1 }}>{item.icon}</span>
+                  <span style={{
                     fontSize: '9px',
                     marginTop: '2px',
                     color: active ? '#c9a84c' : '#8892a4',
                     whiteSpace: 'nowrap',
                     fontFamily: 'Jost, sans-serif',
                     fontWeight: active ? 600 : 400,
-                  }}
-                >
-                  {item.label}
-                </span>
-                {active && (
-                  <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#c9a84c', marginTop: '1px' }}/>
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </nav>
+                  }}>
+                    {item.label}
+                  </span>
+                  {active && (
+                    <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#c9a84c', marginTop: '1px' }}/>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        </nav>
+      </div>
     </div>
   );
 }
