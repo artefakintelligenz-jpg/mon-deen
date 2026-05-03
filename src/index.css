@@ -1,0 +1,96 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0d1117;
+  color: #c4cad6;
+  font-family: 'Jost', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Islamic geometric background pattern */
+.geo-bg {
+  background-color: #0d1117;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23c9a84c' stroke-width='0.3' opacity='0.15'%3E%3Cpolygon points='40,5 75,25 75,55 40,75 5,55 5,25'/%3E%3Cpolygon points='40,15 65,30 65,50 40,65 15,50 15,30'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.arabic { font-family: 'Amiri', serif; direction: rtl; }
+.display { font-family: 'Cormorant Garamond', serif; }
+
+/* Gold shimmer animation */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.gold-text {
+  background: linear-gradient(90deg, #8a6e2f, #c9a84c, #e8c97e, #c9a84c, #8a6e2f);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* Fade in */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fadeIn 0.5s ease forwards; }
+
+/* Prayer time ring */
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(201,168,76,0); }
+}
+.pulse-ring { animation: pulse-ring 2s ease-in-out infinite; }
+
+/* Dhikr counter bounce */
+@keyframes counter-bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+.counter-bounce { animation: counter-bounce 0.15s ease; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #161b26; }
+::-webkit-scrollbar-thumb { background: #8a6e2f; border-radius: 2px; }
+
+/* Nav bottom */
+.nav-item { transition: all 0.2s ease; }
+.nav-item.active { color: #c9a84c; }
+.nav-item.active .nav-dot { opacity: 1; }
+.nav-dot { opacity: 0; transition: opacity 0.2s; }
+
+/* Cards */
+.card {
+  background: #1e2736;
+  border: 1px solid rgba(201,168,76,0.1);
+  border-radius: 16px;
+}
+.card-hover:hover {
+  border-color: rgba(201,168,76,0.3);
+  transform: translateY(-2px);
+  transition: all 0.2s ease;
+}
+
+/* Progress bar */
+.progress-bar {
+  background: linear-gradient(90deg, #2a6b5a, #c9a84c);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* Qibla needle */
+@keyframes needle-settle {
+  0% { transform: rotate(var(--start-angle)) scaleX(1.2); }
+  60% { transform: rotate(var(--end-angle)) scaleX(0.9); }
+  80% { transform: rotate(calc(var(--end-angle) - 3deg)); }
+  100% { transform: rotate(var(--end-angle)); }
+}
