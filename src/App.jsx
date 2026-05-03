@@ -21,80 +21,73 @@ const PAGES = {
   quran: Quran, statistics: Statistics, cercle: CerclePrivee, zakat: Zakat,
 };
 
-const BOTTOM_NAV = [
-  { id: 'dashboard', label: 'Accueil', icon: '🏠' },
-  { id: 'prayers',   label: 'Prières', icon: '🕌' },
-  { id: 'adhkar',    label: 'Adhkars', icon: '📿' },
-  { id: 'quran',     label: 'Coran',   icon: '📖' },
-  { id: 'more',      label: 'Plus',    icon: '☰'  },
+const NAV = [
+  { id: 'dashboard',  label: 'Accueil',  icon: '🏠' },
+  { id: 'prayers',    label: 'Prières',  icon: '🕌' },
+  { id: 'adhkar',     label: 'Adhkars',  icon: '📿' },
+  { id: 'quran',      label: 'Coran',    icon: '📖' },
+  { id: 'dhikr',      label: 'Dhikr',    icon: '🔢' },
+  { id: 'names',      label: '99 Noms',  icon: '✨' },
+  { id: 'ramadan',    label: 'Ramadan',  icon: '🌙' },
+  { id: 'statistics', label: 'Stats',    icon: '📊' },
+  { id: 'cercle',     label: 'Cercle',   icon: '🤝' },
+  { id: 'zakat',      label: 'Zakât',    icon: '💰' },
+  { id: 'qibla',      label: 'Qibla',    icon: '🧭' },
+  { id: 'muhasaba',   label: 'Bilan',    icon: '🪞' },
+  { id: 'settings',   label: 'Réglages', icon: '⚙️' },
 ];
-
-const MORE_MENU = [
-  { id: 'dhikr',      label: 'Dhikr',        icon: '🔢' },
-  { id: 'names',      label: '99 Noms',      icon: '✨' },
-  { id: 'ramadan',    label: 'Ramadan',      icon: '🌙' },
-  { id: 'statistics', label: 'Statistiques', icon: '📊' },
-  { id: 'cercle',     label: 'Cercle',       icon: '🤝' },
-  { id: 'zakat',      label: 'Zakât',        icon: '💰' },
-  { id: 'qibla',      label: 'Qibla',        icon: '🧭' },
-  { id: 'muhasaba',   label: 'Muhâsaba',     icon: '🪞' },
-  { id: 'settings',   label: 'Paramètres',   icon: '⚙️' },
-];
-
-const BACK_PAGES = ['qibla','muhasaba','settings','ramadan','statistics','cercle','zakat'];
 
 export default function App() {
   const [page, setPage] = useState('dashboard');
-  const [showMore, setShowMore] = useState(false);
   const [location, setLocation] = useLocalStorage('user_location', null);
-
-  const navigate = (id) => { setShowMore(false); setPage(id); };
   const Page = PAGES[page] || Dashboard;
-  const currentMore = MORE_MENU.find(m => m.id === page);
 
   return (
-    <div className="geo-bg min-h-screen">
-      {BACK_PAGES.includes(page) && (
-        <div className="fixed top-0 left-0 right-0 z-40 bg-night/90 backdrop-blur-sm border-b border-white/5">
-          <div className="flex items-center gap-3 px-4 py-3 max-w-md mx-auto">
-            <button onClick={() => setPage('dashboard')} className="text-muted text-xl">←</button>
-            <p className="text-soft text-sm font-medium">{currentMore?.icon} {currentMore?.label}</p>
-          </div>
-        </div>
-      )}
-
-      <main className={BACK_PAGES.includes(page) ? 'pt-12' : ''}>
-        <Page location={location} setLocation={setLocation} onNav={navigate} />
+    <div className="geo-bg min-h-screen flex flex-col">
+      {/* Page content */}
+      <main className="flex-1 overflow-y-auto" style={{ paddingBottom: '72px' }}>
+        <Page location={location} setLocation={setLocation} onNav={setPage} />
       </main>
 
-      {showMore && (
-        <div className="fixed inset-0 z-50 flex flex-col justify-end">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowMore(false)}/>
-          <div className="relative bg-midnight border-t border-white/10 rounded-t-3xl p-4 pb-8 max-w-md mx-auto w-full">
-            <div className="w-10 h-1 bg-white/20 rounded-full mx-auto mb-4"/>
-            <div className="grid grid-cols-3 gap-3">
-              {MORE_MENU.map(item => (
-                <button key={item.id} onClick={() => navigate(item.id)} className="card p-3 text-center card-hover">
-                  <p className="text-2xl mb-1">{item.icon}</p>
-                  <p className="text-xs text-soft">{item.label}</p>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
-
-      <nav className="fixed bottom-0 left-0 right-0 bg-midnight/95 backdrop-blur-xl border-t border-white/5 z-40">
-        <div className="flex justify-around items-center py-2 max-w-md mx-auto">
-          {BOTTOM_NAV.map(item => {
-            const isActive = item.id === 'more' ? showMore : page === item.id;
+      {/* Bottom nav — scrollable single row */}
+      <nav
+        className="fixed bottom-0 left-0 right-0 z-50 bg-midnight/98 backdrop-blur-xl border-t border-white/5"
+        style={{ height: '64px' }}
+      >
+        <div
+          className="flex items-center h-full px-1 gap-0.5 overflow-x-auto"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' }}
+        >
+          {NAV.map(item => {
+            const active = page === item.id;
             return (
-              <button key={item.id}
-                onClick={() => item.id === 'more' ? setShowMore(!showMore) : navigate(item.id)}
-                className={`flex flex-col items-center py-1 px-3 rounded-xl transition-all ${isActive ? 'text-gold' : 'text-muted'}`}>
-                <span className="text-xl">{item.icon}</span>
-                <span className="text-xs mt-0.5">{item.label}</span>
-                <div className={`w-1 h-1 rounded-full bg-gold mt-0.5 ${isActive ? 'opacity-100' : 'opacity-0'}`}/>
+              <button
+                key={item.id}
+                onClick={() => setPage(item.id)}
+                className="flex flex-col items-center justify-center flex-shrink-0 rounded-xl transition-all px-2 py-1"
+                style={{
+                  minWidth: '52px',
+                  height: '52px',
+                  background: active ? 'rgba(201,168,76,0.12)' : 'transparent',
+                  border: active ? '1px solid rgba(201,168,76,0.25)' : '1px solid transparent',
+                }}
+              >
+                <span style={{ fontSize: '18px', lineHeight: 1 }}>{item.icon}</span>
+                <span
+                  style={{
+                    fontSize: '9px',
+                    marginTop: '2px',
+                    color: active ? '#c9a84c' : '#8892a4',
+                    whiteSpace: 'nowrap',
+                    fontFamily: 'Jost, sans-serif',
+                    fontWeight: active ? 600 : 400,
+                  }}
+                >
+                  {item.label}
+                </span>
+                {active && (
+                  <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#c9a84c', marginTop: '1px' }}/>
+                )}
               </button>
             );
           })}
