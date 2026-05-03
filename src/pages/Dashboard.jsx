@@ -142,25 +142,53 @@ export default function Dashboard({ location, onNav }) {
           <span>✨</span> Sunnah Rawatib
         </p>
         <div className="space-y-2">
-          {SUNNAH_RAWATIB.map(s => (
-            <button
-              key={s.id}
-              onClick={() => toggleSunnah(s.id)}
-              className={`w-full flex items-center justify-between p-2 rounded-lg transition-all text-left ${
-                sunnahLog[s.id] ? 'bg-gold/10 border border-gold/20' : 'bg-night/40 border border-white/5'
-              }`}
-            >
-              <div>
-                <p className="text-sm text-soft">{s.name}</p>
-                <p className="text-xs text-muted">{s.count} rak'ât</p>
-              </div>
-              <div className={`w-6 h-6 rounded-full flex items-center justify-center border ${
-                sunnahLog[s.id] ? 'bg-gold border-gold text-night' : 'border-muted'
-              }`}>
-                {sunnahLog[s.id] && <span className="text-xs font-bold">✓</span>}
-              </div>
-            </button>
-          ))}
+          {SUNNAH_RAWATIB.map(s => {
+            const done = !!sunnahLog[s.id];
+            return (
+              <button
+                key={s.id}
+                onClick={() => toggleSunnah(s.id)}
+                className={`w-full flex items-center justify-between p-3 rounded-xl transition-all text-left ${
+                  done ? 'bg-gold/10 border border-gold/20' : 'bg-night/40 border border-white/5'
+                }`}
+              >
+                <div className="flex-1">
+                  <p className={`text-sm font-medium ${done ? 'text-gold' : 'text-soft'}`}>{s.name}</p>
+                  <p className="text-xs text-muted">{s.count} rak'at · {s.timing === 'before' ? 'avant' : 'apres'}</p>
+                </div>
+                <div className="flex items-center gap-2 ml-3">
+                  <div style={{
+                    width:'20px', height:'20px', borderRadius:'50%',
+                    border: !done ? '2px solid #c9a84c' : '2px solid rgba(255,255,255,0.1)',
+                    background: !done ? 'rgba(201,168,76,0.2)' : 'transparent',
+                    boxShadow: !done ? '0 0 6px rgba(201,168,76,0.3)' : 'none',
+                    transition: 'all 0.2s'
+                  }}/>
+                  <div style={{
+                    width:'20px', height:'20px', borderRadius:'50%',
+                    border: done ? '2px solid #3d9b84' : '2px solid rgba(255,255,255,0.1)',
+                    background: done ? 'rgba(42,107,90,0.4)' : 'transparent',
+                    boxShadow: done ? '0 0 6px rgba(61,155,132,0.4)' : 'none',
+                    transition: 'all 0.2s',
+                    display:'flex', alignItems:'center', justifyContent:'center'
+                  }}>
+                    {done && <div style={{width:'8px',height:'8px',borderRadius:'50%',background:'#3d9b84'}}/>}
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex gap-6 mt-3 justify-center">
+          <div className="flex items-center gap-1.5">
+            <div style={{width:'14px',height:'14px',borderRadius:'50%',border:'2px solid #c9a84c',background:'rgba(201,168,76,0.2)'}}/>
+            <span className="text-xs text-muted">Pas encore</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <div style={{width:'14px',height:'14px',borderRadius:'50%',border:'2px solid #3d9b84',background:'rgba(42,107,90,0.4)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+            </div>
+            <span className="text-xs text-muted">Accompli</span>
+          </div>
         </div>
       </div>
 
